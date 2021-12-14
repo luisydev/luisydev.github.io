@@ -1,0 +1,10 @@
+/*! Place your custom styles here */
+.logogit{
+    color: darkslategray ;
+}
+.logogit :hover{
+    color: black;
+}
+.mylogo{
+    font-size: 5rem; 
+}
