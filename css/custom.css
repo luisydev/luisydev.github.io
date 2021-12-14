@@ -8,3 +8,11 @@
 .mylogo{
     font-size: 5rem; 
 }
+#vibra {animation-timing-function: ease-in-out;}
+
+@keyframes mymove {
+  from {left: 0px;}
+  to {left: 10px;}
+  from {right: 0px;}
+  to {right: 10px;}
+}
