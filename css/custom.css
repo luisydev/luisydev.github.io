@@ -4,7 +4,14 @@
 }
 .logogit :hover{
     color: black;
+    font-size: 2.5rem;
 }
+
+:hover.logoSketchfab{
+    color: darkslategray;
+    font-size: 2rem;
+}
+
 .mylogo{
     font-size: 5rem; 
 }
@@ -17,4 +24,22 @@
     background-image: url(../img/newlogo.png);
     background-repeat: no-repeat;
     background-position: center;
+}
+.linkContacto{
+    text-decoration: none;
+    font-size: 2rem;
+    color: darkslategray;
+}
+:hover.linkContacto{
+    text-decoration: none;
+    font-size: 2.5rem;
+    color: goldenrod;
+}
+.flecha{
+    color: darkslategray;
+}
+:hover.flecha{
+    text-decoration: none;
+    font-size: 2.5rem;
+    color: goldenrod;
 }
