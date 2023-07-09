@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Macondo&display=swap"
+    rel="stylesheet">
+
+  <title>Lanzador de Dados</title>
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      font-family: 'Macondo', cursive;
+      background-image: url(img/bg.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      color: white;
+      min-width: 100vw;
+      min-height: 100vh;
+    }
+  
+    .container {
+      text-align: center;
+      margin-top: 50px;
+    }
+  
+    .section-title {
+      font-family: 'Lato', sans-serif;
+      font-family: 'Macondo', cursive;
+    }
+  
+    .section-tipo-dados {
+      margin: 50px;
+    }
+  
+    .section-cantidad-dados {
+      margin: 50px;
+    }
+  
+    .section-boton {
+      margin: 50px;
+    }
+  
+    .boton-lanzar {
+      font-family: 'Lato', sans-serif;
+      font-family: 'Macondo', cursive;
+    }
+  
+    .section-resultados {
+      margin: 50px;
+    }
+  
+    .section-agrupados {
+      margin: 50px;
+    }
+  
+    .section-suma {
+      margin: 50px;
+    }
+  
+    .resultado {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 10px;
+      display: inline-block;
+    }
+  
+    .dado {
+      width: 80px; /* Aumenta el ancho de los dados */
+      height: 80px; /* Opcional: puedes ajustar también la altura de los dados */
+      background-color: white;
+      border: 0px solid black;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+    }
+  
+    .dado img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  
+    /* Elimina la propiedad white-space: nowrap; para que los dados se envuelvan en una nueva línea en dispositivos móviles */
+    #resultados {
+      overflow-x: auto;
+    }
+  </style>
+  
+</head>
+
+<body>
+  <div class="container">
+    <div class="section-title">
+      <h1>Lanzador de Dados</h1>
+    </div>
+    <div class="section-tipo-dados">
+      <label for="tipoDado">Tipo de Dado:</label>
+      <select id="tipoDado">
+        <option value="4">D4</option>
+        <option value="6" selected>D6</option>
+        <option value="8">D8</option>
+        <option value="10">D10</option>
+        <option value="12">D12</option>
+        <option value="20">D20</option>
+        <option value="100">D100</option>
+      </select>
+    </div>
+    <div class="section-cantidad-dados">
+      <label for="cantidadDados">Número de Dados:</label>
+      <input type="number" id="cantidadDados" min="1" value="1">
+    </div>
+    <div class="section-boton">
+      <button class="boton-lanzar" onclick="lanzarDados()">Lanzar Dados</button>
+    </div>
+    <div class="section-resultados" id="resultados"></div>
+    <div class="section-agrupados" id="agrupados"></div>
+    <div class="section-suma" id="suma"></div>
+  </div>
+  <script>
+    function lanzarDados() {
+      var tipoDado = parseInt(document.getElementById("tipoDado").value);
+      var cantidadDados = parseInt(document.getElementById("cantidadDados").value);
+      var resultados = [];
+      var suma = 0;
+      var parejas = {};
+      var numSeis = 0;
+
+      for (var i = 0; i < cantidadDados; i++) {
+        var dado = Math.floor(Math.random() * tipoDado) + 1;
+        resultados.push(dado);
+        suma += dado;
+
+        if (dado === 6) {
+          numSeis++;
+        } else if (dado >= 1 && dado <= 5) {
+          if (parejas[dado]) {
+            parejas[dado]++;
+          } else {
+            parejas[dado] = 1;
+          }
+        }
+      }
+
+      var resultadosElemento = document.getElementById("resultados");
+      resultadosElemento.innerHTML = ""; // Limpiar resultados anteriores
+
+      for (var i = 0; i < resultados.length; i++) {
+        var resultadoElemento = document.createElement("div");
+        resultadoElemento.classList.add("resultado");
+
+        var dadoElemento = document.createElement("div");
+        dadoElemento.classList.add("dado");
+
+        var imagenDado = document.createElement("img");
+        imagenDado.src = "img/D6_" + resultados[i] + ".png"; // Ruta a la imagen del dado correspondiente
+        imagenDado.alt = "Dado 6 - Resultado " + resultados[i];
+
+        dadoElemento.appendChild(imagenDado);
+        resultadoElemento.appendChild(dadoElemento);
+        resultadosElemento.appendChild(resultadoElemento);
+      }
+
+      var sumaElemento = document.getElementById("suma");
+      sumaElemento.textContent = "Suma de los resultados: " + suma;
+
+      var agrupadosElemento = document.getElementById("agrupados");
+      agrupadosElemento.innerHTML = ""; // Limpiar agrupados anteriores
+
+      var maxPareja = 0;
+
+      for (var key in parejas) {
+        if (parejas[key] >= 2 && key > maxPareja) {
+          maxPareja = key;
+        }
+      }
+
+      if (maxPareja !== 0) {
+        var agrupadoElemento = document.createElement("div");
+        agrupadoElemento.textContent = "Pareja más alta: " + maxPareja;
+        agrupadosElemento.appendChild(agrupadoElemento);
+      }
+
+      if (numSeis > 0) {
+        var agrupadoElemento = document.createElement("div");
+        agrupadoElemento.textContent = "Resultado 6: " + numSeis + " veces";
+        agrupadosElemento.appendChild(agrupadoElemento);
+      }
+    }
+  </script>
+</body>
+</html>
