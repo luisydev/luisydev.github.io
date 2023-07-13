@@ -125,6 +125,7 @@
       text-align: center;
       margin-top: 10px;
       background-color: rgba(255, 255, 255, 0.8);
+    }
   </style>
 
 </head>
@@ -132,10 +133,10 @@
 <body>
   <div class="container">
     <div class="section-title">
-      <h1>Lanzador de Dados</h1>
+      <h1>Mistborn dice launcher</h1>
     </div>
     <div class="section-tipo-dados">
-      <label for="tipoDado">Tipo de Dado</label><br>
+      <label for="tipoDado">Dice type</label><br>
       <select id="tipoDado">
         <option value="4">D4</option>
         <option value="6" selected>D6</option>
@@ -147,11 +148,11 @@
       </select>
     </div>
     <div class="section-cantidad-dados">
-      <label for="cantidadDados">Número de Dados</label>
+      <label for="cantidadDados">Number of dices</label>
       <input type="number" id="cantidadDados" min="1" value="1">
     </div>
     <div class="section-boton">
-      <button class="boton-lanzar" onclick="lanzarDados()">Lanzar Dados</button>
+      <button class="boton-lanzar" onclick="lanzarDados()">Roll it!</button>
     </div>
     <div class="section-resultados" id="resultados"></div>
     <div class="section-agrupados" id="agrupados"></div>
