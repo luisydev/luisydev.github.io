@@ -25,31 +25,31 @@
       min-width: 100vw;
       min-height: 100vh;
     }
-  
+
     .container {
       text-align: center;
       margin-top: 50px;
     }
-  
+
     .section-title {
       font-family: 'Lato', sans-serif;
       font-family: 'Macondo', cursive;
     }
-  
+
     .section-tipo-dados {
       margin: 50px;
       font-size: 25px;
     }
-  
+
     .section-cantidad-dados {
       margin: 50px;
       font-size: 25px;
     }
-  
+
     .section-boton {
       margin: 50px;
     }
-  
+
     .boton-lanzar {
       padding: 15px;
       font-size: 20px;
@@ -57,29 +57,29 @@
       font-family: 'Lato', sans-serif;
       font-family: 'Macondo', cursive;
     }
-  
+
     .section-resultados {
       margin: 50px;
       font-size: 20px;
     }
-  
+
     .section-agrupados {
       margin: 50px;
       font-size: 20px;
     }
-  
+
     .section-suma {
       margin: 50px;
       font-size: 20px;
     }
-  
+
     .resultado {
       font-size: 24px;
       font-weight: bold;
       margin-top: 10px;
       display: inline-block;
     }
-  
+
     .dado {
       width: 80px; /* Aumenta el ancho de los dados */
       height: 80px; /* Opcional: puedes ajustar también la altura de los dados */
@@ -91,12 +91,12 @@
       justify-content: center;
       margin-right: 10px;
     }
-  
+
     .dado img {
       max-width: 100%;
       max-height: 100%;
     }
-  
+
     /* Elimina la propiedad white-space: nowrap; para que los dados se envuelvan en una nueva línea en dispositivos móviles */
     #resultados {
       overflow-x: auto;
@@ -114,8 +114,21 @@
       margin-top: 10px;
       background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
     }
+
+    /* Estilos modificados para el selector de dados */
+    #tipoDado {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 15px;
+      border: none;
+      outline: none;
+      width: 200px;
+      text-align: center;
+      margin-top: 10px;
+      background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    }
   </style>
-  
+
 </head>
 
 <body>
@@ -124,7 +137,7 @@
       <h1>Lanzador de Dados</h1>
     </div>
     <div class="section-tipo-dados">
-      <label for="tipoDado">Tipo de Dado:</label>
+      <label for="tipoDado">Tipo de Dado</label><br>
       <select id="tipoDado">
         <option value="4">D4</option>
         <option value="6" selected>D6</option>
@@ -136,7 +149,7 @@
       </select>
     </div>
     <div class="section-cantidad-dados">
-      <label for="cantidadDados">Número de Dados:</label>
+      <label for="cantidadDados">Número de Dados</label>
       <input type="number" id="cantidadDados" min="1" value="1">
     </div>
     <div class="section-boton">
@@ -218,4 +231,5 @@
     }
   </script>
 </body>
+
 </html>
