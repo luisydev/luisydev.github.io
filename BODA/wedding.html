@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>¡NOS CASAMOS!</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html,
+    body{
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      background:#120d07;
+    }
+
+    body{
+      font-family:'Cormorant Garamond', serif;
+    }
+
+    .scene{
+      width:100vw;
+      min-height:100vh;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      perspective:1200px;
+
+      position:relative;
+
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,215,120,0.08), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(255,180,80,0.06), transparent 50%),
+        #0f0b07;
+    }
+
+    /* RUNAS */
+
+    .scene::before{
+      content:"ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚺ ᚾ ᛁ ᛃ ᛇ ᛈ ᛉ ᛋ ᛏ";
+
+      position:absolute;
+      inset:0;
+
+      font-size:28px;
+
+      opacity:0.06;
+
+      color:#d8b56a;
+
+      letter-spacing:18px;
+
+      writing-mode: vertical-rl;
+
+      text-orientation: mixed;
+
+      filter: blur(0.5px);
+
+      pointer-events:none;
+    }
+
+    /* ENTRADA CARTA */
+
+    @keyframes envelopeIntro {
+
+      0%{
+        opacity:0;
+
+        transform:
+          translateY(120px)
+          scale(0.8)
+          rotateX(30deg);
+
+        filter:blur(8px);
+      }
+
+      60%{
+        opacity:1;
+
+        transform:
+          translateY(-10px)
+          scale(1.02)
+          rotateX(0deg);
+
+        filter:blur(0px);
+      }
+
+      80%{
+        transform:
+          translateY(4px)
+          scale(0.99);
+      }
+
+      100%{
+        transform:
+          translateY(0)
+          scale(1);
+      }
+
+    }
+
+    /* ROMPER SELLO */
+
+    @keyframes sealBreak {
+
+      0%{
+        transform:
+          scale(1)
+          rotate(0deg);
+
+        opacity:1;
+        filter:brightness(1);
+      }
+
+      20%{
+        transform:
+          scale(1.08)
+          rotate(-4deg);
+
+        filter:brightness(1.4);
+      }
+
+      40%{
+        transform:
+          scale(0.95)
+          rotate(3deg);
+
+        filter:brightness(0.9);
+      }
+
+      60%{
+        transform:
+          scale(1.12)
+          rotate(-8deg);
+
+        opacity:0.9;
+      }
+
+      100%{
+        transform:
+          scale(0.2)
+          rotate(25deg);
+
+        opacity:0;
+        filter:blur(6px);
+      }
+
+    }
+
+    .envelope{
+
+      width:92%;
+      max-width:520px;
+
+      background:linear-gradient(135deg,#e8d9b5,#d6c39a);
+
+      border:2px solid #b08a4a;
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.7),
+        0 0 40px rgba(255,215,120,0.05);
+
+      position:relative;
+
+      transform-style:preserve-3d;
+
+      animation: envelopeIntro 1.5s ease-out forwards;
+    }
+
+    /* TAPA SOBRE */
+
+    .flap{
+
+      height:140px;
+
+      background:linear-gradient(135deg,#e3cfaa,#cbb180);
+
+      clip-path: polygon(0 0,100% 0,50% 100%);
+
+      position:relative;
+
+      z-index:-1;
+
+      transform-origin:top center;
+
+      transition:transform 1s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    /* APERTURA */
+
+    .envelope.open .flap{
+      transform:rotateX(180deg);
+    }
+
+    .ring{
+
+      width:70px;
+      height:70px;
+
+      border-radius:50%;
+
+      border:3px solid #c9a24a;
+
+      position:absolute;
+
+      top:20px;
+      right:20px;
+
+      box-shadow:
+        0 0 18px rgba(255,215,120,0.3),
+        inset 0 0 8px rgba(255,215,120,0.2);
+    }
+
+    .body{
+
+      text-align:center;
+
+      font-family:'IM Fell English SC', serif;
+
+      color:#3b2a16;
+
+      padding:20px 25px 40px;
+    }
+
+    .body h1{
+
+      font-size:26px;
+
+      letter-spacing:2px;
+
+      margin-bottom:10px;
+    }
+
+    .body p{
+
+      font-size:16px;
+
+      opacity:0.9;
+
+      line-height:1.6;
+    }
+
+    /* SELLO */
+
+    .seal{
+
+      width:90px;
+      height:90px;
+
+      border-radius:50%;
+
+      background:
+        radial-gradient(circle at 30% 30%, #d34b4b, transparent 40%),
+        radial-gradient(circle,#a81f1f,#5a0b0b);
+
+      border:2px solid #d4af37;
+
+      margin:-55px auto 20px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      cursor:pointer;
+
+      overflow:hidden;
+
+      box-shadow:
+        0 0 25px rgba(200,30,30,0.4),
+        inset 0 0 10px rgba(255,255,255,0.08);
+
+      transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+    }
+
+    .seal:hover{
+
+      transform:scale(1.08);
+
+      box-shadow:
+        0 0 35px rgba(255,60,60,0.5),
+        0 0 20px rgba(255,215,120,0.2);
+    }
+
+    .seal img{
+
+      max-width:210%;
+      max-height:135%;
+
+      object-fit:contain;
+
+      display:block;
+
+      pointer-events:none;
+
+      transition:transform 0.3s ease;
+    }
+
+    .seal:hover img{
+      transform:scale(1.05) rotate(-2deg);
+    }
+
+    /* ROMPER */
+
+    .seal.breaking{
+
+      animation:
+        sealBreak 0.65s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    /* OVERLAY */
+
+    .overlay{
+
+      position:fixed;
+      inset:0;
+
+      background:rgba(0,0,0,0);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      padding:20px;
+
+      opacity:0;
+
+      pointer-events:none;
+
+      transition:
+        background 0.7s ease,
+        opacity 0.7s ease;
+
+      z-index:100;
+    }
+
+    .overlay.active{
+
+      background:rgba(0,0,0,0.88);
+
+      opacity:1;
+
+      pointer-events:auto;
+    }
+
+    /* CARTA */
+
+    .letter{
+
+      width:100%;
+      /*height:90dvh;*/
+
+      max-width:420px;
+
+      background:#f3ead7;
+
+      padding:20px;
+
+      position:relative;
+
+      border-radius:4px;
+
+      box-shadow:
+        0 10px 60px rgba(0,0,0,0.6),
+        0 0 25px rgba(255,215,120,0.08);
+
+      transform:
+        translateY(140px)
+        scale(0.82);
+
+      opacity:0;
+
+      filter:blur(8px);
+
+      transition:
+        transform 1s cubic-bezier(0.22,1,0.36,1),
+        opacity 0.8s ease,
+        filter 0.8s ease;
+    }
+
+    .overlay.active .letter{
+
+      transform:
+        translateY(0)
+        scale(1);
+
+      opacity:1;
+
+      filter:blur(0);
+    }
+
+    .letter img{
+
+      width:100%;
+      height:auto;
+
+      border-radius:4px;
+
+      box-shadow:0 5px 20px rgba(0,0,0,0.5);
+    }
+
+    .close{
+
+      position:absolute;
+
+      top:12px;
+      right:12px;
+
+      width:34px;
+      height:34px;
+
+      border:none;
+
+      border-radius:50%;
+
+      background:rgba(0,0,0,0.15);
+
+      color:#5a3e1b;
+
+      font-size:18px;
+
+      cursor:pointer;
+
+      z-index:10;
+
+      backdrop-filter: blur(4px);
+
+      transition:0.2s;
+    }
+
+    .close:hover{
+
+      transform:scale(1.1);
+
+      background:rgba(0,0,0,0.25);
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- AUDIO -->
+
+  <audio id="bgAudio" loop>
+    <source src="img/The Shire [IlmiRndxkU8].mp3" type="audio/mp3">
+  </audio>
+
+  <div class="scene">
+
+    <div class="envelope" id="envelope">
+
+      <div class="flap">
+        <div class="ring"></div>
+      </div>
+
+      <!-- SELLO -->
+
+      <div class="seal" id="openBtn">
+
+        <img
+          src="img/Gemini_Generated_Image_icno35icno35icno.png"
+          alt="Sello"
+        >
+
+      </div>
+
+      <div class="body">
+
+        <h1>Una carta llega desde la Tierra Media</h1>
+
+        <p>
+          Sellada con cera antigua y palabras de esperanza...
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CARTA -->
+
+  <div class="overlay" id="overlay">
+
+    <div class="letter">
+
+      <button class="close" id="close">✕</button>
+
+      <img
+        src="img/testSaveTheDatet.png"
+        alt="Carta Antigua"
+      >
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const overlay = document.getElementById('overlay');
+    const btn = document.getElementById('openBtn');
+    const close = document.getElementById('close');
+    const audio = document.getElementById('bgAudio');
+    const envelope = document.getElementById('envelope');
+
+    let audioStarted = false;
+
+    /* AUDIO */
+
+    function fadeInAudio(audio, target = 0.35, duration = 2000){
+
+      audio.volume = 0;
+
+      audio.play().catch(()=>{});
+
+      const step = target / (duration / 50);
+
+      const interval = setInterval(() => {
+
+        if(audio.volume < target){
+
+          audio.volume = Math.min(
+            audio.volume + step,
+            target
+          );
+
+        } else {
+
+          clearInterval(interval);
+
+        }
+
+      }, 50);
+
+    }
+
+    /* ABRIR */
+
+    btn.addEventListener('click', () => {
+
+      /* romper sello */
+
+      btn.classList.add('breaking');
+
+      /* abrir tapa */
+
+      setTimeout(() => {
+
+        envelope.classList.add('open');
+
+      }, 250);
+
+      /* mostrar carta */
+
+      setTimeout(() => {
+
+        overlay.classList.add('active');
+
+      }, 700);
+
+      /* música */
+
+      if(!audioStarted){
+
+        fadeInAudio(audio);
+
+        audioStarted = true;
+
+      }
+
+    });
+
+    /* CERRAR */
+
+    close.addEventListener('click', () => {
+
+      overlay.classList.remove('active');
+
+      envelope.classList.remove('open');
+
+      btn.classList.remove('breaking');
+
+    });
+
+  </script>
+
+</body>
+</html>
