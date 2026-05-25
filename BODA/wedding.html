@@ -446,7 +446,47 @@
 
       background:rgba(0,0,0,0.25);
     }
+/* TEXTO ENCIMA DE LA CARTA */
+.scroll-content{
+  position:absolute;
+  inset:0;
 
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:center;
+
+  text-align:center;
+
+  padding:14% 12% 22%;
+
+  font-family:'Cormorant Garamond', serif;
+  color:#2b1d0e;
+
+  pointer-events:none;
+}
+
+.scroll-content h2{
+  font-size:22px;
+  margin-bottom:15px;
+}
+
+.scroll-content h3{
+  font-size:16px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  margin-top:10px;
+}
+
+.scroll-content p{
+  font-size:15px;
+  margin:4px 0;
+}
+
+.divider{
+  margin:10px 0;
+  opacity:0.6;
+}
   </style>
 
 </head>
@@ -497,11 +537,26 @@
   <div class="overlay" id="overlay">
 
     <div class="letter">
+<div class="scroll-content">
 
+  <h2>El anuncio de nuestra unión</h2>
+
+  <h3>Ceremonia</h3>
+  <p>13 de noviembre de 2026 · 13:00h</p>
+  <p>Pabellón de Ceremonias del Ayuntamiento de Zaragoza</p>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <h3>Celebración</h3>
+  <p>14 de noviembre de 2026 · 17:30h</p>
+  <p>Espacio Tribeka</p>
+  <p>Av. del Puente del Pilar, 37</p>
+
+</div>
       <button class="close" id="close">✕</button>
 
       <img
-        src="./testSaveTheDatet.png"
+        src="./SaveTheDate.png"
         alt="Carta Antigua"
       >
 
