@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuenta atrás</title>
+
+<style>
+
+/* 🔥 BACKGROUND A PANTALLA COMPLETA */
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    text-align:center;
+    color:#fff;
+
+    background-image:url("img/bg_fw_nacho.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+/* overlay oscuro para que el texto se lea bien */
+body::before{
+    content:"";
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.55);
+    z-index:0;
+}
+
+h1, h2, .countdown{
+    position:relative;
+    z-index:1;
+}
+
+h1{
+    margin:40px 20px;
+}
+
+h2{
+    margin:40px 0 20px;
+}
+
+.countdown{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.box{
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    padding:20px;
+    min-width:120px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.2);
+}
+
+.number{
+    font-size:48px;
+    font-weight:bold;
+}
+
+.label{
+    margin-top:8px;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+@media(max-width:600px){
+    .number{ font-size:34px; }
+    .box{ min-width:90px; }
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Cuenta atrás 14ª edición anual Freakweekend</h1>
+
+<!-- CONTADOR 1 -->
+<h2>Calentando los dados</h2>
+
+<div class="countdown">
+    <div class="box">
+        <div id="days" class="number">0</div>
+        <div class="label">Días</div>
+    </div>
+
+    <div class="box">
+        <div id="hours" class="number">0</div>
+        <div class="label">Horas</div>
+    </div>
+
+    <div class="box">
+        <div id="minutes" class="number">0</div>
+        <div class="label">Minutos</div>
+    </div>
+
+    <div class="box">
+        <div id="seconds" class="number">0</div>
+        <div class="label">Segundos</div>
+    </div>
+</div>
+
+<!-- CONTADOR 2 -->
+<h2>Tiempo para imantar peanas</h2>
+
+<div class="countdown">
+    <div class="box">
+        <div id="hoursOnly" class="number">0</div>
+        <div class="label">Horas</div>
+    </div>
+
+    <div class="box">
+        <div id="minutes2" class="number">0</div>
+        <div class="label">Minutos</div>
+    </div>
+
+    <div class="box">
+        <div id="seconds2" class="number">0</div>
+        <div class="label">Segundos</div>
+    </div>
+</div>
+
+<script>
+
+const targetDate = new Date("2026-07-03T17:00:00");
+
+function updateCountdown(){
+
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if(diff <= 0){
+        document.body.innerHTML = "<h1>¡La cuenta atrás ha terminado!</h1>";
+        return;
+    }
+
+    // CONTADOR 1
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("days").textContent = days;
+    document.getElementById("hours").textContent = hours;
+    document.getElementById("minutes").textContent = minutes;
+    document.getElementById("seconds").textContent = seconds;
+
+    // CONTADOR 2
+    const totalHours = Math.floor(diff / (1000 * 60 * 60));
+    const minutesOnly = Math.floor((diff / (1000 * 60)) % 60);
+    const secondsOnly = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("hoursOnly").textContent = totalHours;
+    document.getElementById("minutes2").textContent = minutesOnly;
+    document.getElementById("seconds2").textContent = secondsOnly;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+</script>
+
+</body>
+</html>

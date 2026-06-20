@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>D&D Dice Advanced</title>
+
+<style>
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #0f0c08, #000);
+  color: #f3e6c8;
+  font-family: Georgia;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.container {
+  width: 520px;
+  text-align: center;
+}
+
+canvas {
+  background: radial-gradient(circle at center, #2a1d12, #0d0a07);
+  border: 2px solid #c49a4a;
+  border-radius: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.box {
+  border: 1px solid #c49a4a;
+  background: #1b120b;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+input {
+  width: 60px;
+  text-align: center;
+  background: #000;
+  color: #f3e6c8;
+  border: 1px solid #c49a4a;
+}
+
+button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  background: #c49a4a;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#result {
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h3>🎲 D&D Dice Roller</h3>
+
+<div class="grid">
+  <div class="box">d4 <input id="d4" type="number" value="0"></div>
+  <div class="box">d6 <input id="d6" type="number" value="0"></div>
+  <div class="box">d8 <input id="d8" type="number" value="0"></div>
+  <div class="box">d10 <input id="d10" type="number" value="0"></div>
+  <div class="box">d12 <input id="d12" type="number" value="0"></div>
+  <div class="box">d20 <input id="d20" type="number" value="0"></div>
+</div>
+
+<canvas id="c" width="420" height="360"></canvas>
+
+<button id="roll">🎲 Lanzar todos</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+const inputs = {
+  4: document.getElementById("d4"),
+  6: document.getElementById("d6"),
+  8: document.getElementById("d8"),
+  10: document.getElementById("d10"),
+  12: document.getElementById("d12"),
+  20: document.getElementById("d20"),
+};
+
+function rand(min,max){return Math.random()*(max-min)+min;}
+function roll(f){return Math.floor(Math.random()*f)+1;}
+
+let dice = [];
+
+function createDice(faces){
+  return {
+    faces,
+    x:200,
+    y:180,
+    vx:rand(-15,15),
+    vy:rand(-15,15),
+    rot:rand(-0.3,0.3),
+    angle:0,
+    value:roll(faces),
+    done:false
+  };
+}
+
+// 🎨 formas
+function drawShape(f){
+  switch(f){
+    case 4: drawPoly(3,22); break;
+    case 6: ctx.rect(-20,-20,40,40); break;
+    case 8: drawPoly(4,22); break;
+    case 10: drawPoly(5,22); break;
+    case 12: drawPoly(6,22); break;
+    case 20: drawPoly(14,22); break;
+  }
+}
+
+function drawPoly(n,r){
+  ctx.beginPath();
+  for(let i=0;i<n;i++){
+    const a=(Math.PI*2/n)*i;
+    const x=Math.cos(a)*r;
+    const y=Math.sin(a)*r;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+}
+
+function draw(d){
+  ctx.save();
+  ctx.translate(d.x,d.y);
+  ctx.rotate(d.angle);
+
+  ctx.fillStyle="#f3e6c8";
+  ctx.strokeStyle="#c49a4a";
+  ctx.lineWidth=2;
+
+  drawShape(d.faces);
+
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle="#1a0f08";
+  ctx.font="bold 14px Georgia";
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+  ctx.fillText(d.value,0,0);
+
+  ctx.restore();
+}
+
+function update(){
+  ctx.clearRect(0,0,420,360);
+
+  dice.forEach(d=>{
+
+    if(!d.done){
+      d.x+=d.vx;
+      d.y+=d.vy;
+      d.angle+=d.rot;
+
+      d.vx*=0.97;
+      d.vy*=0.97;
+      d.rot*=0.97;
+
+      if(d.x<30||d.x>390) d.vx*=-1;
+      if(d.y<30||d.y>330) d.vy*=-1;
+
+      if(Math.abs(d.vx)<0.2 && Math.abs(d.vy)<0.2){
+        d.done=true;
+        d.value=roll(d.faces);
+      }
+    }
+
+    draw(d);
+  });
+
+  requestAnimationFrame(update);
+}
+
+// 🎲 lanzar
+document.getElementById("roll").onclick = () => {
+
+  dice = [];
+
+  Object.keys(inputs).forEach(f=>{
+    let qty = +inputs[f].value;
+
+    for(let i=0;i<qty;i++){
+      dice.push(createDice(+f));
+    }
+  });
+
+  setTimeout(()=>{
+    let grouped = {};
+
+    dice.forEach(d=>{
+      if(!grouped[d.faces]) grouped[d.faces]=[];
+      grouped[d.faces].push(d.value);
+    });
+
+    let total = dice.reduce((a,b)=>a+b.value,0);
+
+    let text = Object.entries(grouped)
+      .map(([f,v])=>`d${f}: [${v.join(", ")}]`)
+      .join(" | ");
+
+    document.getElementById("result").innerHTML =
+      `${text} <br><b>Total: ${total}</b>`;
+  },1200);
+};
+
+update();
+</script>
+
+</body>
+</html>
